@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUTM Result Portal - Animated</title>
+    <link rel="icon" type="image/x-icon" href="/static/favhome.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            left: 80%;
+            animation-delay: -2s;
+        }
+
+        .particle:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            top: 80%;
+            left: 20%;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* Page Load Animation */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            visibility: visible;
+            transition: all 0.8s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-animation {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Container Animations */
+        .container {
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header Animations */
+        header {
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 2s ease;
+        }
+
+        header:hover::before {
+            left: 100%;
+        }
+
+        .navbar-brand img {
+            height: 90px;
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        /* Navigation Link Animations */
+        .navbar-nav .nav-link {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .navbar-nav .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #fff;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .navbar-nav .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .navbar-nav .nav-link:active {
+            transform: translateY(-1px) scale(0.98);
+            animation: ripple 0.6s ease;
+        }
+
+        @keyframes ripple {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+
+        /* Hamburger Menu Animation */
+        .navbar-toggler {
+            border: none;
+            background: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-toggler:hover {
+            transform: scale(1.1);
+        }
+
+        .navbar-toggler .icon-bar {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background-color: #333;
+            margin-bottom: 4px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .navbar-toggler .icon-bar:last-child {
+            margin-bottom: 0;
+        }
+
+        .navbar-toggler.active .icon-bar:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .navbar-toggler.active .icon-bar:nth-child(2) {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .navbar-toggler.active .icon-bar:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Card Animations */
+        .card {
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            animation: cardAppear 0.8s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Form Animations */
+        .form-group {
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideInLeft 0.6s ease forwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 1s; }
+        .form-group:nth-child(2) { animation-delay: 1.2s; }
+        .form-group:nth-child(3) { animation-delay: 1.4s; }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group label {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 12px 20px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            position: relative;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+            background: #fff;
+        }
+
+        .form-control:focus + label {
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        /* Button Animations */
+        .btn {
+            border-radius: 30px;
+            width: 50%;
+            background: linear-gradient(135deg, #003c7c, #002a56);
+            border: none;
+            color: #fff;
+            display: block;
+            margin: 0 auto;
+            padding: 15px 30px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: buttonAppear 0.6s ease forwards;
+            animation-delay: 1.6s;
+        }
+
+        @keyframes buttonAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #003268, #00336a);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 60, 124, 0.4);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(0.98);
+            animation: buttonPulse 0.3s ease;
+        }
+
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 60, 124, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 60, 124, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 60, 124, 0); }
+        }
+
+        /* Heading Animations */
+        h1 {
+            font-weight: 700;
+            color: #002f61;
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: headingZoom 0.8s ease forwards;
+            animation-delay: 0.6s;
+            position: relative;
+        }
+
+        @keyframes headingZoom {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            animation: underlineGrow 1s ease forwards;
+            animation-delay: 1.4s;
+        }
+
+        @keyframes underlineGrow {
+            to { width: 100px; }
+        }
+
+        /* Social Button Animations */
+        button {
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            padding: 10px;
+            margin-right: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        button:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        button i {
+            font-size: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        button:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(-2px) scale(0.95);
+            animation: socialPulse 0.4s ease;
+        }
+
+        @keyframes socialPulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+        }
+
+        button.github:hover {
+            color: #fff;
+            background: linear-gradient(135deg, #333, #000);
+        }
+
+        button.linkedin:hover {
+            color: #fff;
+            background: linear-gradient(135deg, #0077b5, #005885);
+        }
+
+        button.instagram:hover {
+            color: #fff;
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        }
+
+        /* Heart Animation */
+        .fa-heart {
+            color: #07008f;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Footer Animations */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: footerSlide 0.8s ease forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes footerSlide {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Click Ripple Effect */
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple-effect::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+
+        .ripple-effect:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Responsive Animations */
+        @media (max-width: 768px) {
+            .btn {
+                width: 80%;
+            }
+            
+            .navbar-nav .nav-link {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+        }
+
+        /* Hover Effects for Interactive Elements */
+        .interactive-element {
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Scroll Animations */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-animation"></div>
+    </div>
+
+    <!-- Animated Background Particles -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand interactive-element" href="#">
+                    <img src="./static/cutm.png" alt="CUTM Logo" height="90">
+                </a>
+                <button class="navbar-toggler" type="button" id="navbarToggler">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link ripple-effect" href="#"><i class="fas fa-home"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ripple-effect" href="#footer"><i class="fas fa-envelope"></i> Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ripple-effect" href="#"><i class="fas fa-user-shield"></i> Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ripple-effect" href="#"><i class="fas fa-info-circle"></i> About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1>🎓 Result Portal</h1>
+                        <form action="/" method="post" id="searchForm">
+                            <div class="form-group">
+                                <label for="registration"><i class="fas fa-user"></i> Registration Number:</label>
+                                <input type="number" class="form-control interactive-element" id="registration" name="registration" placeholder="Enter your registration number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="semester"><i class="fas fa-calendar-alt"></i> Semester:</label>
+                                <select class="form-control interactive-element" id="semester" name="semester">
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                    <option value="5">Semester 5</option>
+                                    <option value="6">Semester 6</option>
+                                    <option value="7">Semester 7</option>
+                                    <option value="8">Semester 8</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="btn ripple-effect">
+                                <i class="fas fa-search"></i> Search Results
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer" class="scroll-animate">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-left">
+                    <strong>Made with <i class="fas fa-heart"></i> by Yuvraj</strong><br/><br/>
+                    <strong>For any issues or inquiries, please contact:</strong><br/>
+                    <p>Email: <a href="mailto:230101120260@certurionuniv.edu.in">230101120260@certurionuniv.edu.in</a></p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button class="github">
+                        <i class="fab fa-github"></i>
+                    </button>
+                    <button class="linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </button>
+                    <button class="instagram">
+                        <i class="fab fa-instagram"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <p>&copy; 2024 CUTM Result Portal. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Page Load Animation
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // Navbar Toggler Animation
+        document.getElementById('navbarToggler').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('navbarSupportedContent').classList.toggle('show');
+        });
+
+        // Form Submission Animation
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // Simulate search delay
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                alert('Search completed! (This is a demo)');
+            }, 2000);
+        });
+
+        // Add ripple effect to clickable elements
+        document.querySelectorAll('.ripple-effect').forEach(element => {
+            element.addEventListener('click', function(e) {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s linear;
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: 20px;
+                    height: 20px;
+                    margin-left: -10px;
+                    margin-top: -10px;
+                `;
+                
+                element.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Scroll Animation
+        function handleScrollAnimation() {
+            const scrollElements = document.querySelectorAll('.scroll-animate');
+            
+            scrollElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScrollAnimation);
+        handleScrollAnimation(); // Initial check
+
+        // Enhanced hover effects
+        document.querySelectorAll('.interactive-element').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px) scale(1.02)';
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Form input animations
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateX(5px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Social button click animations
+        document.querySelectorAll('button.github, button.linkedin, button.instagram').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.animation = 'socialPulse 0.4s ease';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 400);
+            });
+        });
+
+        // Dynamic CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
